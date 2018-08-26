@@ -1,0 +1,62 @@
+﻿
+@{
+	ViewData["Title"] = "Login";
+
+}
+
+<script>
+	InitialFacebook(456197441531202);
+	(function (d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+
+		if (d.getElementById(id))
+			return;
+		js = d.createElement(s); js.id = id;
+		js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1&appId=456197441531202&autoLogAppEvents=1';
+		fjs.parentNode.insertBefore(js, fjs);
+
+	}(document, 'script', 'facebook-jssdk'));
+
+	var finished_rendering = function () {
+		console.log("finished rendering plugins");
+		var spinner = document.getElementById("spinner");
+		spinner.removeAttribute("style");
+		spinner.removeChild(spinner.childNodes[0]);
+	}
+	debugger;
+
+	setTimeout(function () {
+		if (FB) {
+			FB.Event.subscribe('xfbml.render', finished_rendering);
+		}
+		
+	}, 1500);
+
+	function checkLoginState() {
+		FB.getLoginStatus(function (response) {
+			window.location.href = "/Home";
+			// TODO: store the logged user in the data base
+		});
+	}
+	
+</script>
+
+<div class="login-contianer" style="height: 843px;">
+	<div class="out-logo"></div>
+	<div class="inner">
+		<div id="account-header">
+			<div class="acc-header">
+				<div class="title h1">Welcome to Pets - Story </div>
+			</div>
+		</div>
+		<div id="account-body">	
+			<div id="fb-root">
+				<div id="spinner" style="background: #4267b2; border-radius: 5px; color: white; height: 40px; text-align: center; width: 250px; font-size:16px; padding-top:10px">
+					Loading
+					<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="true" data-auto-logout-link="false" data-use-continue-as="true" onlogin="checkLoginState()"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
