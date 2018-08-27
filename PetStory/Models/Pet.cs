@@ -10,7 +10,7 @@ namespace PetStory.Models
         public int ID { set; get; }
         public string name { set; get; }
         public string animalType { set; get; }
-        public virtual Owner owner { set; get; }
+        //public virtual Owner owner { set; get; }
         public double age { set; get; }
         public string image { set; get; }
 

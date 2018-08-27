@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using PetStory.Models;
 
 namespace PetStory
 {
@@ -33,6 +35,9 @@ namespace PetStory
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<PetStoryContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("PetStoryContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

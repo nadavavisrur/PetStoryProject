@@ -10,9 +10,9 @@ namespace PetStory.Models
         public int ID { set; get; }
         public string name { set; get; }
         public DateTime birthday { set; get; } //parse as daytime object
-        public virtual List<Owner> friends { set; get; }
+        //public virtual List<Owner> friends { set; get; }
         public string city { set; get; }
-        public virtual List<Pet> pets { set; get; }
+        //public virtual List<Pet> pets { set; get; }
         public string image { set; get; }
 
         /*public Owner()
