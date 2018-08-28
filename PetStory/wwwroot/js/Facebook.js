@@ -15,10 +15,11 @@
 		//});
 
 		FB.getLoginStatus(function (response) {
-			if (response.status === 'connected') {
+            if (response.status === 'connected') {
 				console.log("user is logged into fb");
 
-				if (window.location.pathname !== '/Home' && window.location.pathname !== '/')
+                checkIfExist(response.authResponse);
+				if (window.location.pathname === '/Home/Login')
 					window.location.href = '/Home';
 			}
 			else if (response.status === 'not_authorized') {
@@ -30,8 +31,49 @@
 					window.location.href = '/Home/Login';
 			}
 
-		});
+        });
 
+        function checkIfExist(userDetails) {
+            $.ajax({
+                type: 'GET',
+                url: '/Owners/Facebook/' + userDetails.userID,
+                success: function (result) {
+                    if (!result) {
+                        addNewUser({ ID: userDetails.userID, token: userDetails.accessToken });
+                    }
+                },
+                error: function (err) {
+                    console.log("Something went wrong: ");
+                    console.log(err);
+                }
+            });
+        }
+
+        function addNewUser(details) {
+            FB.api('/me', { fields: 'name,picture' }, function (response) {
+                var __AjaxAntiForgeryForm = $("#__AjaxAntiForgeryForm input");
+                var data = "name=" + response.name
+                    + "&image=" + response.picture.data.url
+                    + "&facebookID=" + details.ID
+                    + "&birthday=" + (new Date()).toISOString()
+                    + "&city=default"
+                    + "&__RequestVerificationToken=" + __AjaxAntiForgeryForm.attr("value");
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Owners/Create',
+                    data: encodeURI(data),
+                    success: function (result) {
+                        // Nothing to do - user has beem added
+                    },
+                    error: function (err) {
+                        console.log("Something went wrong: ");
+                        console.log(err);
+                    }
+                });
+                console.log(response);
+            })
+        }
 		function SubmitLogin(credentials) {
 			$.ajax({
 				url: "/account/facebooklogin",
