@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PetStory.Models.Park>
+@model IEnumerable<PetStory.Models.Park>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,6 +8,7 @@
 
 <p>
     <a asp-action="Create">Create New</a>
+
 </p>
 <table class="table">
     <thead>
@@ -28,26 +29,97 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.zipCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.likes)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.zipCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.likes)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+
+<head>
+    <style>
+
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 400px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+    </style>
+</head>
+<body>
+    <h3>All Avaliable Parks</h3>
+    <!--The div element for the map -->
+    <div id="map"></div>
+
+    <script>
+        // Initialize and add the map
+        function initMap() {
+
+            var a = [
+            @foreach(var item in Model)
+            {
+                @:{ "address": "@item.address" },
+            }
+            ];
+           
+            // The location of Hayarkon Park
+            var TA = { lat: 32.100768, lng: 34.811902 };
+            // The map, centered at Uluru
+            var map = new google.maps.Map(
+                document.getElementById('map'), { zoom: 12, center: TA });
+            // The marker, positioned at Uluru
+            //var marker = new google.maps.Marker({ position: TA, map: map });
+
+            var geocoder = new google.maps.Geocoder();
+            
+            a.forEach(function (item) {
+                geocoder.geocode({ 'address': item.address }, function (results, status) {
+                    if (status === 'OK') {
+                        //map.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+                    }
+                })
+            });
+
+            //marker.addListener('click', function () {
+              //  map.setZoom(12);
+                //map.setCenter(marker.getPosition());
+           // });
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+            
+        }
+    </script>
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2pkRsR0Z5yLLztB8vr2zWgBjkUdTwYmA&callback=initMap">
+    </script>
+</body>
