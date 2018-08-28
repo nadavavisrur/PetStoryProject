@@ -8,6 +8,7 @@ namespace PetStory.Models
     public class Owner
     {
         public int ID { set; get; }
+        public string facebookID { set; get; }
         public string name { set; get; }
         public DateTime birthday { set; get; } //parse as daytime object
         //public virtual List<Owner> friends { set; get; }
