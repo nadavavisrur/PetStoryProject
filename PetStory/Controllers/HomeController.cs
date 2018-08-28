@@ -29,12 +29,13 @@ namespace PetStory.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Search(string searchString)
         {
+            searchString = "blalbal";
             return View();
         }
 
-		public IActionResult Login()
+	    public IActionResult Login()
 		{
 			return View();
 		}
