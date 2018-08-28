@@ -24,6 +24,19 @@ namespace PetStory.Controllers
             return View(await _context.Owner.ToListAsync());
         }
 
+        public async Task<Owner> Facebook(string id)
+        {
+
+            var owner = await _context.Owner.FirstOrDefaultAsync(m => m.facebookID == id);
+
+            if (owner == null)
+            {
+                return null;
+            }
+
+            return owner;
+        }
+
         // GET: Owners/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -53,7 +66,7 @@ namespace PetStory.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,name,birthday,city,image")] Owner owner)
+        public async Task<IActionResult> Create([Bind("ID,name,birthday,city,image,facebookID")] Owner owner)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +98,7 @@ namespace PetStory.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,name,birthday,city,image")] Owner owner)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,name,birthday,city,image,facebookID")] Owner owner)
         {
             if (id != owner.ID)
             {

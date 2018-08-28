@@ -49,6 +49,9 @@
                 <p>&copy; 2018 - PetStory</p>
             </footer>
             </div>
+            <form id="__AjaxAntiForgeryForm" action="#" method="post">
+              @Html.AntiForgeryToken()
+            </form>
 
             <environment exclude="Development">
                 <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
@@ -68,4 +71,4 @@
 
             @RenderSection("Scripts", required: false)
         </body>
-    </html>
+</html>
