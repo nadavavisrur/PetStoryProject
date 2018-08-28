@@ -16,7 +16,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.name)
             </th>
-            
+            <th>
+                @Html.DisplayNameFor(model => model.zipCode)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.address)
             </th>
@@ -33,7 +35,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.name)
                 </td>
-           
+                <td>
+                    @Html.DisplayFor(modelItem => item.zipCode)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.address)
                 </td>
@@ -98,7 +102,15 @@
                     }
                 })
             });
-            
+
+            //marker.addListener('click', function () {
+              //  map.setZoom(12);
+                //map.setCenter(marker.getPosition());
+           // });
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
             
         }
     </script>
